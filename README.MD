@@ -9,8 +9,17 @@ Built using HTML, CSS, and JavaScript with smooth animations and responsive desi
 - Match-pair logic
 - Score tracking
 - Different set of images/cards to match(9 sets)
-- Responsible design
+- Responsive design
 
+## INSTALLATION/HOW TO RUN 
+ In bash , run :
+ git clone https://github.com/ahasanulhaque2006-rgb/MyRepo.git
+ and then run : 
+ cd .\MyRepo\
+ finally :
+ open .\MemoryFlipper.html and have a good time !
+ 
+ 
 ## How to Play
 1. Click on a card to flip it.
 2. Flip another card to find its matching pair.
