@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Flipper</title>
+</head>
+
+<body>
+  <div class="gamecontainer">
+    <button id="msg" onclick="gen()">
+      New Game
+    </button><br><br>
+    <div id="gameBrd">
+      <div id="container" class="cards">
+        The "Memory Flipper🧩" <br>
+        --- By AHGames 🎮.<br>
+      </div>
+    </div><br>
+    <div id="scr">Game completion :0 %</div>
+    <div id="moves">Flips :0</div><br><br>
+    <div id="mscBtns">
+      <button class="musicBtn" onclick="snd1()">
+        Add Music
+      </button>
+      <button class="musicBtn" onclick="snd2()">
+        Remove Music
+      </button>
+    </div>
+  </div>
+
+  <p id="store4"></p>
+  <p id="store5"></p>
+  <p id="store6"></p>
+
+</body>
+<style>
+  body {
+    background-color: #0492C2;
+    font-family: serif;
+    font-weight: 800;
+
+
+  }
+
+  .gamecontainer {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #gameBrd {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+  }
+
+  .cards {
+
+    font-family: Sans-Serif;
+    text-align: center;
+    font-style: italic;
+    color: yellow;
+    font-size: x-large;
+  }
+
+  .gridcards {
+    width: 80vmin;
+    height: 80vmin;
+    max-width: 450px;
+    max-height: 450px;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+
+  .crd {
+    height: 100%;
+    width: 100%;
+    font-size: xxx-large;
+    padding: 5px;
+    border-radius: 10%;
+    background-color: rgb(255, 255, 255);
+    border: 3px solid rgb(223, 156, 32);
+
+  }
+
+  .musicBtn {
+    background: linear-gradient(To left, yellow, orange);
+    min-height: 40px;
+    height: auto;
+    width: auto;
+    font-size: large;
+    font-weight: 800;
+    padding: 10px;
+  }
+
+  #mscBtns {
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  #msg {
+    color: white;
+    display: flex;
+    background: linear-gradient(To left, red, violet);
+    width: 30vmax;
+    margin: auto;
+    height: auto;
+    text-align: center;
+    padding: 25px;
+    font-size: large;
+    font-weight: 900;
+    justify-self: center;
+    justify-content: center;
+  }
+
+  .animate {
+    animation-name: flip;
+    animation-duration: 0.5s;
+    animation-timing-function: easy-in-out;
+    animation-iteration-count: 1;
+  }
+
+  @keyframes flip {
+
+    0%,
+    100% {
+      transform: scaleX(1)
+    }
+
+    50% {
+      transform: scaleX(0.1);
+      transform-origin: center
+    }
+  }
+
+  #store5,
+  #store4,
+  #store6 {
+    display: none;
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+  #scr,
+  #moves {
+    text-align: center;
+    color: white;
+    background: linear-gradient(To left, red, violet);
+    height: auto;
+    width: 30vmax;
+    font-size: 25px;
+    padding: 25px;
+    margin: auto;
+  }
+</style>
+<script>
+  // Initializing values and setting music buttons.
+  let score = 0;
+  let count = 0;
+  let trial = 0;
+  let list1 = [];
+  let list2 = [];
+  let box = [];
+  let imgindex = document.getElementById("store6").textContent;
+  let imgindexvalue = Number(imgindex);
+  let arr = ["crd1", "crd2", "crd3", "crd4", "crd5", "crd6", "crd7", "crd8", "crd9", "crd10", "crd11", "crd12", "crd13", "crd14", "crd15", "crd16"];
+  /*const bgMusic = new Audio("music2.mp3");
+  bgMusic.loop = true;
+  const correct = new Audio("correct.mp3");
+  const pop = new Audio("button (1).mp3");
+  const wrong = new Audio("wrong.mp3");
+function snd1() {
+bgMusic.play();
+}
+
+function snd2() {
+bgMusic.pause();
+bgMusic.currentTime = 0;
+}*/
+  const imglist = [
+    ["🌻", "🌼", "🌺", "🌷", "🌹", "🪷", "🌸", "🪻"],
+    ["🍹", "🍨", "🍩", "🍕", "🥞", "🍫", "☕", "🍪"],
+    ["🦜", "🐈", "🐎", "🐘", "🐬", "🐤", "🐧", "🐅"],
+    ["😜", "🤨", "😃", "😭", "😂", "😐", "😱", "😮"],
+    ["🍉", "🍎", "🍒", "🍊", "🥭", "🍍", "🍇", "🍓"],
+    ["🚁", "🏍️", "🚗", "🛥️", "🚅", "🚚", "🚀", "🛩️"],
+    ["🏏", "⚽", "🏸", "🎳", "🎮", "🏀", "🎲", "♟️"],
+    ["🪗", "🪈", "🥁", "🎻", "🎺", "🎹", "🎤", "🎸"],
+    ["🏠", "🏟️", "🏦", "🏫", "🏥", "🏭", "🏢", "🛖"]
+  ];
+  let img = imglist[imgindexvalue];
+
+  // This function generates the game setup . Also Initializes/resets variables and returns to initial condition.
+  function gen() {
+    // Selecting random image Set.
+    let imgindex = Math.floor(Math.random() * 9);
+    //Reseting the variables.
+    document.getElementById("container").textContent = "";
+    document.getElementById("container").classList.add("gridcards");
+    store6.textContent = imgindex;
+    score = 0;
+    count = 0;
+    trial = 0;
+    list2 = [];
+    box = [];
+    // pop.play();
+    //Randomizing list1 into list2 that results in random arrangement in images of the selected image set in the cards.
+    list1 = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
+    let ln = list1.length;
+    let l = Number(ln);
+    let i = 0;
+    while (i < ln) {
+      let r = Math.floor(Math.random() * l);
+      list2.push(list1[r]);
+      list1.splice(r, 1);
+      l--;
+      i++;
+    }
+    //rendering the cards.
+    renderCards();
+    scr.textContent = "Game completion : 0%";
+    moves.textContent = "Flips : 0";
+  }
+  function toggleAnimationClass(strId) {
+    const reqCard = document.getElementById(strId);
+    reqCard.classList.add("animate");
+    setTimeout(() => {
+      reqCard.classList.remove("animate");
+    }, 500);
+  }
+  //Creates the card object and using it's attributes and methods renderCards() creates and renders card buttons in container div.
+  function renderCards() {
+    for (let p = 0; p < 16; p++) {
+      const newCard = new CardItem(arr[p], p);
+      box.push(newCard);
+      const newBtn = document.createElement("button");
+      newBtn.id = newCard.cardNumber;
+      newBtn.classList.add("crd");
+      newBtn.addEventListener("click", () => {
+        newCard.flip();
+      });
+      document.getElementById("container").appendChild(newBtn);
+    }
+  }
+  class CardItem {
+    cardNumber;
+    cardIndex;
+    constructor(cardNumber, cardIndex) {
+      //Initializes each card with card number and index.
+      this.cardNumber = cardNumber;
+      this.cardIndex = cardIndex;
+
+    }
+    //The flip function that flips the chosen card and updates score,moves. Flipbacks happen when two cards do not match.
+    flip() {
+
+      if (box.length < 16) {
+        return;
+      }
+      if (score >= 40) {
+        return;
+      }
+
+      toggleAnimationClass(this.cardNumber);
+
+      setTimeout(() => {
+        let imgindex = document.getElementById("store6").textContent;
+        const img = imglist[imgindex];
+        trial += 1;
+        count += 1;
+        let x = this.cardNumber;
+        let i = list2[Number(this.cardIndex)];
+        let y = img[i];
+        document.getElementById(this.cardNumber).textContent = y;
+
+        //Checks if previously opened card image and currently opened image is same or not. If same,increase score otherwise flipback both cards after a delay of 500 ms.
+        if (count == 2) {
+          if (y == (store4.textContent)) {
+            score += 5;
+            // correct.play();
+            document.getElementById(store5.textContent).disabled = true;
+            document.getElementById(x).disabled = true;
+          }
+          else if (y !== (store4.textContent)) {
+            //  wrong.play();
+            flipback(store5.textContent);
+
+            flipback(x);
+          }
+          count -= 2;
+          scr.textContent = "Game completion : " + String(score * 2.5) + " %";
+        }
+        //Count moves.
+        moves.textContent = "Flips :" + String(trial);
+
+        //Storing the currently opened card number and it's image to compare with the next one.
+        store5.textContent = this.cardNumber;
+        store4.textContent = y;
+
+        //Shows result when game is completed.
+        if (score == 40) {
+          let scro = 10 - (trial - 16) / 10;
+          let scr1 = Math.round(scro * 100) / 100;
+          alert("Game ended. Your overall score is " + String(scr1) + " .")
+          scr.textContent = "Your Score is : " + String(scr1);
+        }
+      }, 250);
+    }
+  }
+  //The flipback function.
+  function flipback(n) {
+    setTimeout(() => {
+      document.getElementById(n).textContent = "";
+      toggleAnimationClass(n);
+    }, 500);
+  }
+</script>
+
+</html>
