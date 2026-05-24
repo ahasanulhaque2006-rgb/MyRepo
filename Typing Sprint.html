@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typing Test App</title>
+</head>
+
+<body>
+  <button id="modechanger" onclick="togglemode()">☀️</button>
+  <h2 style="
+    text-decoration: double;
+    ">Welcome to Typing Sprint 🏃‍➡️!</h2><br>
+  <section>
+    <h2>Click here to begin the test:- </h2><br>
+    <button onclick="startCount()">START</button><br><br>
+  </section>
+  <p></p>
+  <style>
+    body {
+      color: blue;
+      text-align: center;
+      border: 5px double brown;
+      padding: 10%;
+      justify-content: upper center;
+      font-family: serif;
+      font-style: oblique;
+      font-size: large;
+      font-weight: 700;
+    }
+
+    button {
+      background-color: rgb(231, 6, 103);
+      color: azure;
+      height: 40px;
+      width: 150px;
+      font-family: serif;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 10%;
+      transform: scale(0.85);
+    }
+
+    .inputboxstyle {
+      font-size: 20px;
+      height: 150px;
+      width: 100%;
+      column-span: all;
+      font-size: medium;
+    }
+
+    #modechanger {
+      background-color: white;
+      position: relative;
+      top: 10%;
+      left: 55%;
+      height: 30px;
+      width: 50px;
+      text-align: center;
+
+    }
+  </style>
+  <script>
+    let start = document.getElementById("start");
+    const textpieces = [
+      "The quick brown fox jumps over the lazy dog, but today it paused to admire the quiet forest around it. Sunlight filtered through the leaves, casting gentle shadows on the ground as a soft breeze whispered through the trees.",
+
+      "Technology evolves rapidly, shaping the way we communicate, learn, and work. Staying adaptable and curious is essential in a world where innovation constantly redefines what is possible.",
+
+      "Early mornings often bring a sense of calm that is hard to find later in the day. The air feels fresher, the world quieter, and thoughts seem clearer before the noise of daily life begins.",
+
+      "Typing is not just about speed but also about accuracy and rhythm. Developing consistent muscle memory allows fingers to glide across the keyboard with minimal effort and maximum efficiency.",
+
+      "A good book can transport you to another world, introducing characters and ideas that linger long after the final page. Reading regularly expands both imagination and understanding.",
+
+      "Rain tapped gently against the window as the city slowed down under gray skies. People hurried along sidewalks, wrapped in coats, while the scent of wet earth filled the air.",
+
+      "Learning a new skill requires patience, persistence, and a willingness to make mistakes. Each small improvement builds confidence and brings you closer to mastery.",
+
+      "The night sky, scattered with countless stars, reminds us of how vast the universe truly is. Gazing upward can inspire both wonder and curiosity about what lies beyond.",
+
+      "Healthy habits are built over time through consistent effort and mindful choices. Small actions, repeated daily, often lead to the most meaningful long term results.",
+
+      "Creativity thrives when the mind is free to explore without fear of judgment. Whether through writing, art, or music, expressing ideas can be both fulfilling and transformative.",
+
+      "Waves crashed steadily against the shore, carving patterns into the sand that would soon disappear. The ocean's rhythm felt timeless, steady and calming to anyone who paused to listen.",
+
+      "In a busy marketplace, voices overlap in a lively blend of conversation and negotiation. Colors, scents, and sounds combine to create an atmosphere full of energy and movement.",
+
+      "The process of problem solving often involves trial and error. Each failed attempt provides valuable insight that brings you closer to a working solution.",
+
+      "A quiet library offers a sanctuary from the outside world. Surrounded by shelves of knowledge, one can focus deeply and think without distraction.",
+
+      "Traveling to new places broadens perspective and challenges assumptions. Experiencing different cultures encourages empathy and a deeper appreciation of diversity.",
+
+      "Music has the power to influence mood and evoke strong emotions. A single melody can bring back memories or inspire new ideas in unexpected ways.",
+
+      "The glow of a computer screen late at night often signals dedication or curiosity. Whether working or learning, those quiet hours can be surprisingly productive.",
+
+      "Nature thrives in balance, with each element playing a role in maintaining harmony. Disrupting one part of the system can have far-reaching effects on the whole.",
+
+      "Strong communication skills are essential in both personal and professional settings. Clear expression helps prevent misunderstandings and builds better relationships.",
+
+      "Time management is a skill that improves with practice and discipline. Prioritizing tasks effectively allows you to accomplish more while reducing unnecessary stress."
+    ];
+    let textpiece = textpieces[Math.floor(Math.random() * textpieces.length) * 1 / 1];
+    let lightmode = true;
+    let time = 0;
+    let intervalId;
+    let countdownInterval;
+    let normalizedInpVal = "";
+    let normalizedTextPiece = "";
+    let heading = document.querySelector('h2');
+    let section = document.querySelector('section');
+    let message = document.querySelector('p');
+
+    function togglemode() {
+      lightmode = !lightmode;
+      if (lightmode) {
+        document.body.style.background = "white";
+        document.body.style.color = "blue";
+        document.querySelector("#modechanger").textContent = "☀️"
+      }
+      else {
+        document.body.style.background = "black";
+        document.body.style.color = "yellow";
+        document.querySelector("#modechanger").textContent = "🌙";
+      }
+    }
+    window.bringHtmlback = function () {
+      const originalHtml = '<h2>Click here to begin the test:- </h2><br><button onclick="startCount()">START</button>';
+      heading.textContent = "Welcome to Typing Sprint 🏃‍➡️!";
+      section.innerHTML = originalHtml;
+      time = 0;
+      message.textContent = "";
+      textpiece = textpieces[Math.floor(Math.random() * 5) * 1 / 1];
+      if (intervalId) clearInterval(intervalId);
+      if (countdownInterval) clearInterval(countdownInterval);
+      normalizedInpVal = "";
+      normalizedTextPiece = "";
+
+    }
+    function getTypingLevel(wpm) {
+      if (wpm >= 100) {
+        return { grade: "SS", level: "Master – exceptional speed", emoji: "👑" };
+      } else if (wpm >= 86) {
+        return { grade: "S+", level: "Elite – competitive typist", emoji: "🚀" };
+      } else if (wpm >= 71) {
+        return { grade: "S", level: "Expert – high speed & accuracy", emoji: "🔥" };
+      } else if (wpm >= 61) {
+        return { grade: "A+", level: "Very Fast – professional level", emoji: "⚡" };
+      } else if (wpm >= 51) {
+        return { grade: "A", level: "Fast – strong typing control", emoji: "💨" };
+      } else if (wpm >= 41) {
+        return { grade: "B", level: "Above Average – solid speed", emoji: "👍" };
+      } else if (wpm >= 31) {
+        return { grade: "C", level: "Average – functional typing", emoji: "👌" };
+      } else if (wpm >= 21) {
+        return { grade: "D", level: "Basic – improving speed", emoji: "🛠️" };
+      } else {
+        return { grade: "F", level: "Beginner – learning fundamentals", emoji: "🐣" };
+      }
+    }
+
+    window.normalizeText = function (inpText) {
+      return inpText.replace(/\s+/g, ' ').trim();
+    }
+    window.refreshText = function () {
+      textpiece = textpieces[Math.floor(Math.random() * textpieces.length) * 1 / 1];
+      heading.innerHTML = `${textpiece}`;
+      message.textContent = "";
+      if (intervalId) clearInterval(intervalId);
+      if (countdownInterval) clearInterval(countdownInterval);
+      normalizedInpVal = "";
+      normalizedTextPiece = "";
+      startCount();
+    }
+    window.startCount = function () {
+      const html = '<textarea placeholder="Type your text here" id="inp"></textarea><br><button onclick="bringHtmlback()">Back</button><br><button onclick="refreshText()">Refresh Text</button>';
+      heading.innerHTML = `${textpiece}`;
+      section.innerHTML = html;
+      const inp = document.querySelector('textarea');
+      inp.classList.add("inputboxstyle");
+      let inpVal = inp.value;
+      let words = textpiece.split(" ").length;
+      let countdown = words * 30;
+      time = 0;
+      errCount = 0;
+
+      inp.addEventListener("click", startTypingTimer);
+      function startTypingTimer() {
+
+        intervalId = setInterval(() => {
+          time++;
+          inpVal = document.querySelector('textarea').value;
+        }, 100)
+        inp.removeEventListener("click", startTypingTimer)
+      }
+
+      countdownInterval = setInterval(() => {
+        if (countdown < 0) {
+          inp.style.background = 'red';
+          message.textContent = "You took longer time than expected.";
+        }
+        else {
+          countdown--;
+        }
+
+        normalizedInpVal = normalizeText(inpVal);
+        normalizedTextPiece = normalizeText(textpiece);
+        str = normalizedTextPiece.substring(0, normalizedInpVal.length);
+        if (normalizedInpVal != str) {
+          inp.style.color = 'red';
+          message.textContent = "A wrong charcter was just added!"
+          errCount++;
+        }
+        else if (normalizedInpVal === str && !(normalizedInpVal.length == normalizedTextPiece.length)) {
+          inp.style.color = 'green';
+          message.textContent = "";
+        }
+        else if (normalizedInpVal.length == normalizedTextPiece.length) {
+          clearInterval(intervalId);
+          inp.style.background = 'limegreen';
+          const wpm = Math.floor((words / time) * 600) * 100 / 100;
+          const rawAcc = (errCount/ normalizedTextPiece.length)*100;
+          const acc = Math.floor(rawAcc) * 100 / 100;
+          message.textContent = `Your word typing speed per
+                    minute (WPM) is ${wpm} .\n This gives you a grade ${getTypingLevel(wpm).grade}, \n Level: ${getTypingLevel(wpm).level} ${getTypingLevel(wpm).emoji} .\n You have an accuracy rate of ${100-acc} %.`;
+          if (countdownInterval) clearInterval(countdownInterval);
+        }
+      }, 100);
+    }
+  </script>
+</body>
+
+</html>
