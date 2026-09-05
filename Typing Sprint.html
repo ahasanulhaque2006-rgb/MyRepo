@@ -112,6 +112,7 @@
     let countdownInterval;
     let normalizedInpVal = "";
     let normalizedTextPiece = "";
+    let wrongTypedState=false;
     let heading = document.querySelector('h2');
     let section = document.querySelector('section');
     let message = document.querySelector('p');
@@ -188,6 +189,7 @@
       let countdown = words * 30;
       time = 0;
       errCount = 0;
+      wrongTypedState=false;
 
       inp.addEventListener("click", startTypingTimer);
       function startTypingTimer() {
@@ -214,13 +216,21 @@
         if (normalizedInpVal != str) {
           inp.style.color = 'red';
           message.textContent = "A wrong charcter was just added!"
-          errCount++;
+           wrongTypedState=true;
         }
         else if (normalizedInpVal === str && !(normalizedInpVal.length == normalizedTextPiece.length)) {
           inp.style.color = 'green';
           message.textContent = "";
+           if(wrongTypedState){
+            wrongTypedState=false;
+            errCount++;
+          }
         }
         else if (normalizedInpVal.length == normalizedTextPiece.length) {
+            if(wrongTypedState){
+            wrongTypedState=false;
+            errCount++;
+          }
           clearInterval(intervalId);
           inp.style.background = 'limegreen';
           const wpm = Math.floor((words / time) * 600) * 100 / 100;
