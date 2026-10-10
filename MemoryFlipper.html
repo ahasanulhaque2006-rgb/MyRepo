@@ -176,11 +176,10 @@
   let imgindex = document.getElementById("store6").textContent;
   let imgindexvalue = Number(imgindex);
   let arr = ["crd1", "crd2", "crd3", "crd4", "crd5", "crd6", "crd7", "crd8", "crd9", "crd10", "crd11", "crd12", "crd13", "crd14", "crd15", "crd16"];
-  /*const bgMusic = new Audio("music2.mp3");
+  const bgMusic = new Audio("./assets/music2.mp3");
   bgMusic.loop = true;
-  const correct = new Audio("correct.mp3");
-  const pop = new Audio("button (1).mp3");
-  const wrong = new Audio("wrong.mp3");
+  const correct = new Audio("./assets/correct.mp3");
+  const pop = new Audio("./assets/button.mp3");
 function snd1() {
 bgMusic.play();
 }
@@ -188,7 +187,7 @@ bgMusic.play();
 function snd2() {
 bgMusic.pause();
 bgMusic.currentTime = 0;
-}*/
+}
   const imglist = [
     ["🌻", "🌼", "🌺", "🌷", "🌹", "🪷", "🌸", "🪻"],
     ["🍹", "🍨", "🍩", "🍕", "🥞", "🍫", "☕", "🍪"],
@@ -215,7 +214,7 @@ bgMusic.currentTime = 0;
     trial = 0;
     list2 = [];
     box = [];
-    // pop.play();
+    pop.play();
     //Randomizing list1 into list2 that results in random arrangement in images of the selected image set in the cards.
     list1 = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7];
     let ln = list1.length;
@@ -289,7 +288,7 @@ bgMusic.currentTime = 0;
         if (count == 2) {
           if (y == (store4.textContent)) {
             score += 5;
-            // correct.play();
+             correct.play();
             document.getElementById(store5.textContent).disabled = true;
             document.getElementById(x).disabled = true;
           }
